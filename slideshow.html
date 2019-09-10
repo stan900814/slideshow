@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <title>简易轮播图</title>
+    <style>
+        .images {
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.5s;
+        }
+
+        .window {
+            width: 300px;
+            overflow: hidden;
+        }
+
+        .red {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="window">
+        <div class="images" id="images">
+            <img src="http://pic32.nipic.com/20130813/3347542_160503703000_2.jpg" width="300px" alt="图片1">
+            <img src="http://pic40.nipic.com/20140424/18085978_175633400193_2.jpg" width="300px" alt="图片2">
+            <img src="http://pic32.nipic.com/20130813/3347542_160503703000_2.jpg" width="300px" alt="图片3">
+            <img src="http://pic40.nipic.com/20140424/18085978_175633400193_2.jpg" width="300px" alt="图片4">
+        </div>
+    </div>
+    <span id="buttons">
+        <span>第1张</span>
+        <span>第2张</span>
+        <span>第3张</span>
+        <span>第4张</span>
+    </span>
+</body>
+<script>
+    var allButtons = $('#buttons>span')
+    var n
+    var size = allButtons.length
+    var timerId
+    for (let i = 0; i < size; i++) {
+        $(allButtons[i]).on('click', function (x) {
+            var index = $(x.currentTarget).index()
+            var p = index * -300
+            $('#images').css({
+                transform: 'translate(' + p + 'px)'
+            })
+            n = index
+            allButtons.eq(n).addClass('red').siblings('.red').removeClass('red')
+        })
+    }
+    n = 0
+    timerId = setInterval(() => {
+        n += 1
+        allButtons.eq(n % size).trigger('click').addClass('red').siblings('.red').removeClass('red')
+
+    }, 1000)
+    $('window').on('mouseenter', function () {
+        window.clearInterval(timerId)
+    })
+    $('window').on('mouseleave', function () {
+        timerId = setInterval(() => {
+            n += 1
+            allButtons.eq(n % size).trigger('click').addClass('red').siblings('.red').removeClass('red')
+        }, 3000)
+    })
+</script>
+
+</html>
